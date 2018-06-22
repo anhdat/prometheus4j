@@ -19,10 +19,16 @@ public class PrometheusResponse {
     class ResultItem {
         Map<String, String> metric;
         List<Float> value;
+        List<List<Float>> values;
 
         @Override
         public String toString() {
-            return String.format("metric: %s\nvalue: %s", metric.toString(), value.toString());
+            return String.format(
+                "metric: %s\nvalue: %s\nvalues: %s",
+                metric.toString(),
+                value == null ? "" : value.toString(),
+                values == null ? "" : values.toString()
+            );
         }
     }
 

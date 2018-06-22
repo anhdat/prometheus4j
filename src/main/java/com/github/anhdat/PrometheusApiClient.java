@@ -34,4 +34,8 @@ public class PrometheusApiClient {
         return service.query(query, time, timeout).execute().body();
     }
 
+    public PrometheusResponse queryRange(String query, String start, String end, String step, String timeout) throws IOException {
+        return service.queryRange(query, start, end, step, timeout).execute().body();
+    }
+
 }

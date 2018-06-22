@@ -12,4 +12,13 @@ public interface PrometheusRest {
         @Query("time") String time,
         @Query("timeout") String timeout
     );
+
+    @GET("api/v1/query_range")
+    Call<PrometheusResponse> queryRange(
+        @Query("query") String query,
+        @Query("start") String start,
+        @Query("end") String end,
+        @Query("step") String step,
+        @Query("timeout") String timeout
+    );
 }
