@@ -23,7 +23,15 @@ public class PrometheusApiClient {
     }
 
     public PrometheusResponse query(String query) throws IOException {
-        return service.query(query).execute().body();
+        return service.query(query, null, null).execute().body();
+    }
+
+    public PrometheusResponse query(String query, String time) throws IOException {
+        return service.query(query, time, null).execute().body();
+    }
+
+    public PrometheusResponse query(String query, String time, String timeout) throws IOException {
+        return service.query(query, time, timeout).execute().body();
     }
 
 }
