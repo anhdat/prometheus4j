@@ -9,7 +9,7 @@ public class MatrixResponse {
 
     static class MatrixData {
         String resultType;
-        List<MatrixResult> results;
+        List<MatrixResult> result;
     }
 
     static class MatrixResult {
