@@ -1,9 +1,8 @@
-package com.github.anhdat;
+package com.tessell.prometheus4j;
 
-import com.github.anhdat.models.KeyValResponse;
-import com.github.anhdat.models.MatrixResponse;
-import com.github.anhdat.models.PrometheusResponse;
-import com.github.anhdat.models.VectorResponse;
+import com.tessell.prometheus4j.models.KeyValResponse;
+import com.tessell.prometheus4j.models.MatrixResponse;
+import com.tessell.prometheus4j.models.VectorResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
