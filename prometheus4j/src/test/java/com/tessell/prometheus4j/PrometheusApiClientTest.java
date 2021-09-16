@@ -1,5 +1,5 @@
-package com.github.anhdat;
-
+//package com.github.anhdat;
+/*
 import com.github.anhdat.models.KeyValResponse;
 import com.github.anhdat.models.MatrixResponse;
 import com.github.anhdat.models.PrometheusResponse;
@@ -56,4 +56,4 @@ public class PrometheusApiClientTest {
         KeyValResponse response = client.findSeries("up", tenMinEarlier.toString(), now.toString());
         System.out.println("response = " + response);
     }
-}
+}*/

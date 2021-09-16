@@ -1,0 +1,45 @@
+plugins {
+  id 'java'
+  id 'maven-publish'
+
+}
+
+//System.setProperty('javax.net.ssl.trustStore', System.getenv('JAVA_CERTSTORE'))
+//systemProp.javax.net.ssl.trustStore=/usr/local/Cellar/openjdk/16.0.1/libexec/openjdk.jdk/Contents/Home/lib/security/cacerts
+allprojects {
+  repositories {
+    maven {
+      url = "${nexus_repo_base}/${nexus_pull_repo_m2}"
+      credentials {
+        username = project.nexus_username
+        password = project.nexus_password
+      }
+    }
+  }
+}
+subprojects { subproject ->
+  subproject.plugins.apply('java')
+  subproject.plugins.apply('maven-publish')
+  subproject.publishing {
+    repositories {
+      if (project.hasProperty('nexus_push_username')) {
+        maven {
+          name = 'nexus'
+          url = "${nexus_repo_base}/${nexus_push_repo_m2}"
+          credentials {
+            username = project.nexus_push_username
+            password = project.nexus_push_password
+          }
+        }
+      }
+    }
+    publications {
+      maven(MavenPublication) {
+        groupId = project.group
+        artifactId = project.name
+        version = project.version
+        from components.java
+      }
+    }
+  }
+}

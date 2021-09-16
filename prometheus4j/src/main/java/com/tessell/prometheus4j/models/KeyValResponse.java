@@ -1,4 +1,4 @@
-package com.github.anhdat.models;
+package com.tessell.prometheus4j.models;
 
 import java.util.List;
 import java.util.Map;
