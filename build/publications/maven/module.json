@@ -1,0 +1,83 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.tessell",
+    "module": "prometheus4j",
+    "version": "1.0.2-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 16,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "prometheus4j-1.0.2-SNAPSHOT.jar",
+          "url": "prometheus4j-1.0.2-SNAPSHOT.jar",
+          "size": 9291,
+          "sha512": "a385ab746818b69b9d2a0e0d13f999d5b71c86e2e90106c0311b3cca3f7e38e2390e9ea49d4a16321c23f10e698ac1aa8d3ee5d5534af2ba8bfe8bc541b68454",
+          "sha256": "f3ab732ed69736bb80d050e397ccf1ecd732c82590f73d12839911acbb1bad59",
+          "sha1": "6ffa5b02297ea32fdd8a048a18fbfb395a875944",
+          "md5": "ba2089bd66b88bcfeedb7948f5b6ee6c"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 16,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.squareup.retrofit2",
+          "module": "retrofit",
+          "version": {
+            "requires": "2.5.0"
+          }
+        },
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.8.5"
+          }
+        },
+        {
+          "group": "com.squareup.retrofit2",
+          "module": "converter-gson",
+          "version": {
+            "requires": "2.4.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "prometheus4j-1.0.2-SNAPSHOT.jar",
+          "url": "prometheus4j-1.0.2-SNAPSHOT.jar",
+          "size": 9291,
+          "sha512": "a385ab746818b69b9d2a0e0d13f999d5b71c86e2e90106c0311b3cca3f7e38e2390e9ea49d4a16321c23f10e698ac1aa8d3ee5d5534af2ba8bfe8bc541b68454",
+          "sha256": "f3ab732ed69736bb80d050e397ccf1ecd732c82590f73d12839911acbb1bad59",
+          "sha1": "6ffa5b02297ea32fdd8a048a18fbfb395a875944",
+          "md5": "ba2089bd66b88bcfeedb7948f5b6ee6c"
+        }
+      ]
+    }
+  ]
+}
