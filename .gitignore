@@ -230,4 +230,3 @@ python/tessell-common-all-package/dists/
 .gradle
 !gradle/wrapper/gradle-wrapper.jar
 lombok.config
-
