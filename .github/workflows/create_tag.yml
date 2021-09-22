@@ -1,0 +1,104 @@
+---
+###################################################################################
+# GitHub workflow to automatically create a PR against 'main' branch,
+# when there is a PR on 'rel-*' branch created.
+#
+# 1. It checks if the PR already exist and if so, does not create one.
+# 2. In future we can enhance it to read the branch name from Jira label or
+#    equivalent and then create PR. This way we can extend it to multiple
+#    forward merges.
+###################################################################################
+name: Create tag on release branch
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - 'rel-*'
+
+jobs:
+  create-tag-on-merge:
+    runs-on: self-hosted
+    if: "contains(github.base_ref, 'rel-') && github.event.pull_request.merged"
+    steps:
+      - name: Find commit to tag
+        id: commit
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.PIPELINES_REPO_TOKEN  }}
+          script: |
+            console.log("${{ github.event.pull_request.merge_commit_sha }}")
+            core.setOutput("commit_to_tag", "${{ github.event.pull_request.merge_commit_sha }}")
+
+      - name: Find latest tag
+        id: latest_tag
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.PIPELINES_REPO_TOKEN  }}
+          script: |
+            console.log("${{ github.ref }}")
+            parts = "${{ github.ref }}".split('/')
+            branch_name = parts[parts.length - 1]
+            if (branch_name.startsWith('rel-') == false) {
+              console.log("Not matching.")
+            }
+            parts = branch_name.split('.')
+            branch_part = parts.slice(0, parts.length - 1).join('.')
+            per_page = 50
+            page = 1
+            all_tags = []
+            max_patch_no = 1
+            while (true) {
+              result = await github.repos.listTags({
+                owner: "${{ github.repository_owner }}",
+                repo: "${{  github.repository }}".split('/')[1],
+                per_page: per_page,
+                page: page
+              })
+              for (entry in result.data) {
+                tag_name = result.data[entry].name
+                if (tag_name.startsWith(branch_part)) {
+                  patch_no = parseInt(tag_name.substring(branch_part.length + 1))
+                  if (max_patch_no <= patch_no) {
+                    max_patch_no = patch_no + 1
+                  }
+                }
+              }
+              if (result.data.length == per_page) {
+                page = page + 1
+              } else {
+                break;
+              }
+            }
+            tag = branch_part + '.' + max_patch_no
+            core.setOutput('tag_name', tag)
+
+      - name: Create tag
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.PIPELINES_REPO_TOKEN  }}
+          script: |
+            tag = "${{ steps.latest_tag.outputs.tag_name }}"
+            sha_to_tag = "${{ steps.commit.outputs.commit_to_tag }}"
+            repo_name = "${{  github.repository }}".split('/')[1]
+            console.log("Creating tag," + tag + " against commit " + sha_to_tag)
+
+            result = await github.git.createTag({
+                owner: "${{ github.repository_owner }}",
+                repo: repo_name,
+                tag: tag,
+                message: 'Tag created by CI pipeline',
+                type: 'commit',
+                object: sha_to_tag
+            })
+            console.log(result)
+            fullTagName = "refs/tags/" + tag
+            console.log("Creating tag..." + tag)
+            console.log("Updating tag..." + fullTagName)
+            newRef = await github.git.createRef({
+                owner: "${{ github.repository_owner }}",
+                repo: repo_name,
+                ref: fullTagName,
+                sha: sha_to_tag
+            })
+            console.log('Ref updated.');
+            core.setOutput('tag_ref', fullTagName)
